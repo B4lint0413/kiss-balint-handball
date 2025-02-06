@@ -22,7 +22,7 @@ class TeamController extends Controller
      */
     public function store(StoreTeamRequest $request)
     {
-        //
+        return new TeamResource(Team::create($request->validated()));
     }
 
     /**
@@ -30,7 +30,7 @@ class TeamController extends Controller
      */
     public function show(Team $team)
     {
-        //
+        return new TeamResource($team->load('players'));
     }
 
     /**
@@ -38,7 +38,8 @@ class TeamController extends Controller
      */
     public function update(UpdateTeamRequest $request, Team $team)
     {
-        //
+        $team->update($request->validated());
+        return new TeamResource($team);
     }
 
     /**
@@ -46,6 +47,8 @@ class TeamController extends Controller
      */
     public function destroy(Team $team)
     {
-        //
+        $team->players()->detach();
+        $team->delete();
+        return response()->noContent();
     }
 }

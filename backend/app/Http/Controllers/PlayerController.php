@@ -22,7 +22,19 @@ class PlayerController extends Controller
      */
     public function store(StorePlayerRequest $request)
     {
-        return new PlayerResource(Player::create($request->validated));
+        $data = $request->validated();
+        $player = Player::create($data);
+        
+        $team = [];
+        foreach($data['team'] as $key => $value){
+            if($key != 'id'){
+                $team[$key] = $value;
+            }
+        }
+
+        $player->teams()->attach($data['team']['id'], $team);
+        
+        return new PlayerResource($player->load('teams'));
     }
 
     /**
@@ -30,7 +42,7 @@ class PlayerController extends Controller
      */
     public function show(Player $player)
     {
-        //
+        return new PlayerResource($player->load('teams'));
     }
 
     /**
@@ -38,14 +50,16 @@ class PlayerController extends Controller
      */
     public function update(UpdatePlayerRequest $request, Player $player)
     {
-        //
+        $player->update($request->validated());
+        return new PlayerResource($player);
     }
-
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Player $player)
     {
-        //
+        $player->teams()->detach();
+        $player->delete();
+        return response()->noContent();
     }
 }

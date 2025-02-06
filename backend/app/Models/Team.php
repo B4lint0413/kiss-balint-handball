@@ -11,6 +11,8 @@ class Team extends Model
 {
     use HasFactory;
 
+    protected $hidden = ['pivot'];
+    public $timestamps = false;
     protected $fillable = ['name', 'country', 'city', 'stadium', 'stadium_size'];
 
     public function players() : BelongsToMany{

@@ -22,7 +22,11 @@ class UpdateTeamRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "name" => "required|string|max:45",
+            "country" => "required|string|max:45",
+            "city" => "string|max:30",
+            "stadium" => "string|max:45",
+            "stadium_size" => "integer|min:600"
         ];
     }
 }

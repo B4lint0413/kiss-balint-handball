@@ -11,6 +11,8 @@ class Player extends Model
 {
     use HasFactory;
 
+    protected $hidden = ['pivot'];
+    public $timestamps = false;
     protected $fillable = ['name', 'position', 'nationality', 'date_of_birth', 'number', 'height'];
 
     public function teams() : BelongsToMany{

@@ -22,7 +22,15 @@ class StorePlayerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
-        ];
+            "name" => "required|string|max:45",
+            "number" => "required|integer|min:0",
+            "position" => "required|string|max:45",
+            "date_of_birth" => "required|date",
+            "nationality" => "string|max:45",
+            "height" =>"integer|min:0",
+            "team.id" => "required|exists:teams,id",
+            "team.from" => "integer|required",
+            "team.to" => "integer|gte:team.from"
+         ];
     }
 }
